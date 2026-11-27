@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="日本語総まとめ JLPT N3・N2・N1 語彙 — 3,536-word interactive 3D flipbook by Md Hasanul Mobin">
+  <title>日本語総まとめ JLPT N3・N2・N1 語彙 — 3D Flipbook</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="loadingScreen" class="loading-screen" role="status" aria-live="polite">
+    <div class="loading-book" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="loading-title">日本語総まとめ JLPT 語彙</div>
+    <div class="loading-sub">3D বই প্রস্তুত হচ্ছে…</div>
+    <div class="loading-track"><span id="loadingBar"></span></div>
+  </div>
+
+  <header class="topbar">
+    <div class="brand-block">
+      <button class="icon-button mobile-only" id="openThumbsTop" title="পৃষ্ঠা তালিকা" aria-label="পৃষ্ঠা তালিকা">
+        <svg viewBox="0 0 24 24"><path d="M4 5h3v3H4zm5 0h11v3H9zM4 10.5h3v3H4zm5 0h11v3H9zM4 16h3v3H4zm5 0h11v3H9z"/></svg>
+      </button>
+      <div class="brand-seal">語</div>
+      <div class="brand-text">
+        <strong>日本語総まとめ JLPT 語彙</strong>
+        <span>N3 → N2 → N1 · 3,536 VOCABULARY</span>
+      </div>
+    </div>
+    <div class="author-mini">
+      <span>Md Hasanul Mobin</span>
+      <small>আমাদের Nihongo Gakkou</small>
+    </div>
+  </header>
+
+  <main id="stage" class="stage">
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <div id="zoomLayer" class="zoom-layer">
+      <div id="book" class="flip-book" aria-label="Interactive vocabulary flipbook"></div>
+    </div>
+    <div class="drag-hint" id="dragHint"><span>↔</span> Fore-edge ধরে টানুন · ডবল ক্লিকে Zoom · Wheel-এ পৃষ্ঠা</div>
+  </main>
+
+  <div id="drawerBackdrop" class="drawer-backdrop"></div>
+  <aside id="sideDrawer" class="side-drawer" aria-label="পৃষ্ঠা ও অনুসন্ধান প্যানেল">
+    <div class="drawer-header">
+      <div>
+        <strong>JLPT N3 → N2 → N1</strong>
+        <span>পৃষ্ঠা নেভিগেশন</span>
+      </div>
+      <button class="icon-button" id="closeDrawer" aria-label="বন্ধ করুন">✕</button>
+    </div>
+    <div class="drawer-tabs">
+      <button class="drawer-tab active" data-tab="thumbs">থাম্বনেইল</button>
+      <button class="drawer-tab" data-tab="search">অনুসন্ধান</button>
+      <button class="drawer-tab" data-tab="toc">সূচিপত্র</button>
+    </div>
+    <section class="drawer-panel active" id="thumbsPanel"><div id="thumbnailList" class="thumbnail-list"></div></section>
+    <section class="drawer-panel" id="searchPanel">
+      <label class="search-box">
+        <svg viewBox="0 0 24 24"><path d="m21 20-4.35-4.35a7.5 7.5 0 1 0-1.41 1.41L19.59 21zM5 11a6 6 0 1 1 12 0 6 6 0 0 1-12 0z"/></svg>
+        <input id="searchInput" type="search" placeholder="শব্দ,読み方 বা বাংলা অর্থ…" autocomplete="off">
+      </label>
+      <div class="search-meta" id="searchMeta">অনুসন্ধান লিখুন</div>
+      <div id="searchResults" class="search-results"></div>
+    </section>
+    <section class="drawer-panel" id="tocPanel"><div id="tocList" class="toc-list"></div></section>
+  </aside>
+
+  <nav class="controlbar" aria-label="Flipbook controls">
+    <div class="control-group desktop-controls">
+      <button class="tool-button" id="thumbsBtn" title="Thumbnails"><svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zm11 0h7v7h-7zM3 14h7v7H3zm11 0h7v7h-7z"/></svg><span>পৃষ্ঠা</span></button>
+      <button class="tool-button" id="searchBtn" title="Search"><svg viewBox="0 0 24 24"><path d="m21 20-4.35-4.35a7.5 7.5 0 1 0-1.41 1.41L19.59 21zM5 11a6 6 0 1 1 12 0 6 6 0 0 1-12 0z"/></svg><span>খুঁজুন</span></button>
+    </div>
+
+    <div class="control-group nav-controls">
+      <button class="round-button" id="firstBtn" title="First page" aria-label="প্রথম পৃষ্ঠা"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zm12 1.5L10 12l8 5.5z"/></svg></button>
+      <button class="round-button" id="prevBtn" title="Previous page" aria-label="আগের পৃষ্ঠা"><svg viewBox="0 0 24 24"><path d="m15.5 5-7 7 7 7z"/></svg></button>
+      <div class="page-indicator" title="পৃষ্ঠা নম্বর লিখুন">
+        <input id="pageInput" inputmode="numeric" value="1" aria-label="বর্তমান পৃষ্ঠা">
+        <span>/</span><span id="pageTotal">—</span>
+      </div>
+      <button class="round-button" id="nextBtn" title="Next page" aria-label="পরের পৃষ্ঠা"><svg viewBox="0 0 24 24"><path d="m8.5 5 7 7-7 7z"/></svg></button>
+      <button class="round-button" id="lastBtn" title="Last page" aria-label="শেষ পৃষ্ঠা"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM6 6.5l8 5.5-8 5.5z"/></svg></button>
+    </div>
+
+    <div class="control-group desktop-controls">
+      <button class="tool-button" id="zoomOutBtn" title="Zoom out"><svg viewBox="0 0 24 24"><path d="M5 11h14v2H5z"/></svg><span>ছোট</span></button>
+      <button class="zoom-value" id="zoomResetBtn" title="Reset zoom">100%</button>
+      <button class="tool-button" id="zoomInBtn" title="Zoom in"><svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg><span>বড়</span></button>
+      <button class="tool-button" id="autoBtn" title="Auto Flip"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>অটো</span></button>
+      <button class="tool-button" id="fullscreenBtn" title="Fullscreen"><svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4zm10 0h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 0h2v6h-6v-2h4z"/></svg><span>ফুলস্ক্রিন</span></button>
+    </div>
+
+    <div class="control-group">
+      <button class="tool-button" id="moreBtn" title="More options"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg><span>আরও</span></button>
+    </div>
+  </nav>
+
+  <div id="moreMenu" class="more-menu" role="menu">
+    <button id="soundBtn" role="menuitem"><span>🔊</span><b>পৃষ্ঠা ওল্টানোর শব্দ</b><em>চালু</em></button>
+    <button id="shareBtn" role="menuitem"><span>🔗</span><b>শেয়ার / লিংক কপি</b></button>
+    <button id="printBtn" role="menuitem"><span>🖨️</span><b>প্রিন্ট সংস্করণ</b></button>
+    <button id="infoBtn" role="menuitem"><span>ⓘ</span><b>বই ও নির্মাতা</b></button>
+  </div>
+
+  <div id="infoModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+    <div class="modal-card">
+      <button class="modal-close" id="closeInfo" aria-label="বন্ধ করুন">✕</button>
+      <div class="modal-seal">語</div>
+      <h2 id="infoTitle">日本語総まとめ JLPT 語彙</h2>
+      <p class="modal-lead">JLPT N3 → N2 → N1 · Complete Interactive 3D Edition</p>
+      <div class="info-grid">
+        <div><small>Instructor</small><strong>Md Hasanul Mobin</strong></div>
+        <div><small>Institution</small><strong>আমাদের Nihongo Gakkou</strong></div>
+        <div><small>Role</small><strong>Japanese Language Instructor</strong></div>
+        <div><small>Contact</small><strong>01925-548059</strong></div>
+        <div><small>Vocabulary</small><strong>3,536 entries</strong></div>
+        <div><small>Study plan</small><strong>22 weeks · 132 study days · 22 mock tests</strong></div>
+      </div>
+      <p class="modal-note">পাতার কোণ, মাঝখান বা Fore-edge ধরে টানুন। পাতার ডান/বাম পাশে ক্লিক অথবা mouse wheel নিচে/উপরে ঘুরিয়েও পৃষ্ঠা ওল্টানো যাবে। ডবল ক্লিকে Zoom হবে; Zoom অবস্থায় mouse ধরে বই সরান—তখন পাতা উল্টাবে না। আবার ডবল ক্লিক করলে স্বাভাবিক অবস্থায় ফিরবে।</p>
+      <p class="sound-credit">Studio page-turn sound: Joseph Sardin / BigSoundBank · CC0 Public Domain</p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="vendor/page-flip.browser.js"></script>
+  <script src="book-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
